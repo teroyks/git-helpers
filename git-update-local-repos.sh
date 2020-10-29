@@ -3,6 +3,19 @@
 # Delete local repositories that match a deleted remote branch
 # Update the current repository to match origin
 
+# define helpers
+
+is_inside_git_repo() {
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1
+}
+
+# sanity check
+
+is_inside_git_repo || {
+    echo "ERROR: not inside a Git repository"
+    exit 64 # EX_USAGE
+}
+
 # initialize
 
 REPO_STATUS_FILE=/tmp/git-repo-fetch-status
