@@ -14,3 +14,7 @@ There is no installation needed, you can just download the scripts and run them.
 ## Remove Orphan Branches
 
 - removes local branches whose remote branch has been deleted
+
+### Print Only
+
+If you use the `-p` command-line flag, the script prints out a list of local repos that would be deleted without actually deleting anything.
