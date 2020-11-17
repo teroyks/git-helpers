@@ -9,6 +9,16 @@ is_inside_git_repo() {
     git rev-parse --is-inside-work-tree >/dev/null 2>&1
 }
 
+local_repo_exists() {
+    git branch | grep "^ *$1\$"
+}
+
+print_separator() {
+    echo
+    echo "* * *"
+    echo
+}
+
 # sanity check
 
 is_inside_git_repo || {
@@ -28,29 +38,14 @@ REMOTE_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref @{u})
 if [[ -f "$REPO_STATUS_FILE" ]]; then
     echo "Repository status file $REPO_STATUS_FILE found - skipping update"
 else
-    git fetch --all --prune > "$REPO_STATUS_FILE" || {
+    git fetch --all --prune > "$REPO_STATUS_FILE" 2>&1 || {
         echo "ERROR: Fetch failed - check (and remove) status file $REPO_STATUS_FILE before trying again." >&2
         exit 1
     }
 fi
 
 cat "$REPO_STATUS_FILE"
-
-# delete local repos if remote repository was deleted
-
-DELETED_REMOTES=$(grep "\- \[deleted\]" $REPO_STATUS_FILE | sed 's/.* -> //')
-
-for repo in $DELETED_REMOTES; do
-    local_repo=$(basename $repo)
-    if [[ -n $(git branch | grep "^ *$local_repo\$") ]]; then
-        # local repository with the same name as deleted remote repository found
-        git branch --delete "$local_repo"
-    fi
-done
-
-# delete local repo update cache file
-
-rm "$REPO_STATUS_FILE" || echo "WARNING: Could not remove cache file $REPO_STATUS_FILE" >&2
+print_separator
 
 # update current repository to match origin
 
@@ -60,4 +55,24 @@ else
     echo "No tracking branch - skipping update"
 fi
 
+# delete local repos if remote repository was deleted
+
+DELETED_REMOTES=$(grep "\- \[deleted\]" $REPO_STATUS_FILE | sed 's/.* -> //')
+[[ -n $DELETED_REMOTES ]] && print_separator
+
+for repo in $DELETED_REMOTES; do
+    local_repo=$(basename $repo)
+    if [[ -n $(local_repo_exists "$local_repo") ]]; then
+        # local repository with the same name as deleted remote repository found
+        git branch --delete "$local_repo"
+    fi
+done
+
+# delete local repo update cache file
+
+rm "$REPO_STATUS_FILE" || echo "WARNING: Could not remove cache file $REPO_STATUS_FILE" >&2
+
+echo
+echo "=== Current Status ==="
+echo
 git status
