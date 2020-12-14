@@ -72,7 +72,10 @@ done
 
 rm "$REPO_STATUS_FILE" || echo "WARNING: Could not remove cache file $REPO_STATUS_FILE" >&2
 
+EM='\033[0;32m' # Emphasis - green
+NC='\033[0m' # No Color
+
 echo
-echo "=== Current Status ==="
+echo -e "${EM}* * * Current Status * * *${NC}"
 echo
 git status
