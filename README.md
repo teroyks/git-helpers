@@ -56,7 +56,7 @@ Fast-forward
 
 Deleted branch my-merged-feature (was 4d6a645a3).
 
-=== Current Status ===
+* * * Current Status * * *
 
 On branch master
 Your branch is up to date with 'origin/master'.
