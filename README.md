@@ -17,6 +17,15 @@ git update-local-repos
 - merges tracking remote branch into current local branch
 - removes local branches whose remote branch was deleted since previous fetch
 
+## [Rebase Remote Main Branch](./git-rebase-remote-main.sh)
+
+- use before pushing a branch to remote
+- makes sure everything is up to date with the remote main branch
+  - should work with any main branch (e.g. `main` or `master`)
+- local workspace can be dirty (autostashes local changes)
+  - you need to fix conflicts yourself, though
+- as always after rebasing, push changes with [`--force-with-lease`](https://git-scm.com/docs/git-push#Documentation/git-push.txt---force-with-leaseltrefnamegt)
+
 ## [Remove Orphan Branches](git-remove-orphan-branches.sh)
 
 - removes local branches whose remote branch has been deleted
