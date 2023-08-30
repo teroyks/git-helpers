@@ -29,8 +29,9 @@ is_inside_git_repo || {
 # initialize
 
 REPO_STATUS_FILE=/tmp/git-repo-fetch-status
-LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-REMOTE_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref @{u})
+# LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+REMOTE=$(git remote show)
+REMOTE_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref "@{u}")
 
 # update repositories
 # skip if local cache already exists
@@ -61,7 +62,7 @@ DELETED_REMOTES=$(grep "\- \[deleted\]" $REPO_STATUS_FILE | sed 's/.* -> //')
 [[ -n $DELETED_REMOTES ]] && print_separator
 
 for repo in $DELETED_REMOTES; do
-    local_repo=$(basename $repo)
+    local_repo=${repo#"$REMOTE"/}
     if [[ -n $(local_repo_exists "$local_repo") ]]; then
         # local repository with the same name as deleted remote repository found
         git branch --delete "$local_repo"
