@@ -6,7 +6,7 @@ There is no installation needed, you can just download the scripts and run them.
 
 If you link the scripts somewhere on your path (without the `.sh` file extension) you can use them like native git commands, for example:
 
-```shellsession
+```shell
 git update-local-repos
 ```
 
@@ -39,7 +39,7 @@ If you use the `-p` command-line flag, the script prints out a list of local rep
 
 Example output of a repo update:
 
-```shellsession
+```shell
 $ git update-local-repos
 Fetching origin
 From my.git.server:project/myrepo
