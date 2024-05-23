@@ -4,6 +4,7 @@
 # If there are no changes, the branch is deleted with force (-D).
 # Note: you might want to try normal deletion with -d first,
 #       and only use this script if that fails.
+# git branch -d <branch_name> || git delete-merged-branch.sh <branch_name>
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -52,7 +53,10 @@ if git merge --no-commit --no-ff "$branch_name"; then
     else
         echo -e "🚫 ${RED}The branch contains code changes -- not deleted${NC}"
     fi
-    git merge --abort
+    # aborting merge (skip if there was nothing to merge)
+    if [[ -e ".git/MERGE_HEAD" ]]; then
+        git merge --abort
+    fi
 fi
 
 # putting everything back to normal
