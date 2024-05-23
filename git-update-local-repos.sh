@@ -39,7 +39,7 @@ REMOTE_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref "@{u}")
 if [[ -f "$REPO_STATUS_FILE" ]]; then
     echo "Repository status file $REPO_STATUS_FILE found - skipping update"
 else
-    git fetch --all --prune > "$REPO_STATUS_FILE" 2>&1 || {
+    git fetch --all --prune >"$REPO_STATUS_FILE" 2>&1 || {
         echo "ERROR: Fetch failed - check (and remove) status file $REPO_STATUS_FILE before trying again." >&2
         exit 1
     }
@@ -65,7 +65,9 @@ for repo in $DELETED_REMOTES; do
     local_repo=${repo#"$REMOTE"/}
     if [[ -n $(local_repo_exists "$local_repo") ]]; then
         # local repository with the same name as deleted remote repository found
-        git branch --delete "$local_repo"
+        # try normal deletion at first,
+        # if it fails, check if all changes have been merged and delete forcefully
+        git branch --delete "$local_repo" || git-delete-merged-branch "$local_repo"
     fi
 done
 
@@ -74,7 +76,7 @@ done
 rm "$REPO_STATUS_FILE" || echo "WARNING: Could not remove cache file $REPO_STATUS_FILE" >&2
 
 EM='\033[0;32m' # Emphasis - green
-NC='\033[0m' # No Color
+NC='\033[0m'    # No Color
 
 echo
 echo -e "${EM}* * * Current Status * * *${NC}"
