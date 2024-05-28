@@ -65,9 +65,9 @@ for repo in $DELETED_REMOTES; do
     local_repo=${repo#"$REMOTE"/}
     if [[ -n $(local_repo_exists "$local_repo") ]]; then
         # local repository with the same name as deleted remote repository found
-        # try normal deletion at first,
+        # try normal deletion at first (without the helpful hint if the command fails),
         # if it fails, check if all changes have been merged and delete forcefully
-        git branch --delete "$local_repo" || git-delete-merged-branch "$local_repo"
+        git -c advice.forceDeleteBranch= branch --delete "$local_repo" || git-delete-merged-branch "$local_repo"
     fi
 done
 
