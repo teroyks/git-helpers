@@ -16,6 +16,12 @@ git update-local-repos
 - removes remote-tracking references that no longer exist on the remote
 - merges tracking remote branch into current local branch
 - removes local branches whose remote branch was deleted since previous fetch
+- uses the ‘delete merged branch’ helper if available
+
+## [Delete Merged Branch](git-delete-merged-branch.sh)
+
+- force-deletes a local branch if it has been merged into the current branch
+- checks actual diff between branches, not just the commit history
 
 ## [Rebase Remote Main Branch](git-rebase-remote-main.sh)
 
