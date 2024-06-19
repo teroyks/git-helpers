@@ -17,7 +17,7 @@ git update-local-repos
 - merges tracking remote branch into current local branch
 - removes local branches whose remote branch was deleted since previous fetch
 
-## [Rebase Remote Main Branch](./git-rebase-remote-main.sh)
+## [Rebase Remote Main Branch](git-rebase-remote-main.sh)
 
 - use before pushing a branch to remote
 - makes sure everything is up to date with the remote main branch
@@ -30,6 +30,12 @@ git update-local-repos
 
 - removes local branches whose remote branch has been deleted
 - very much a beta, use at own risk
+
+## [Reset Current Branch to Remote](git-reset-to-remote.sh)
+
+- fetches the remote branch and resets the local branch to it
+- handy when remote history has been rewritten
+- use with caution, as it will discard all local changes
 
 ### Print Only
 
