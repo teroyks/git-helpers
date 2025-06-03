@@ -9,6 +9,11 @@ is_inside_git_repo() {
     git rev-parse --is-inside-work-tree >/dev/null 2>&1
 }
 
+is_on_main_branch() {
+    current_branch=$(git branch --show-current)
+    test "$current_branch" = "main" || test "$current_branch" = "master"
+}
+
 local_repo_exists() {
     git branch | grep "^ *$1\$"
 }
@@ -23,6 +28,11 @@ print_separator() {
 
 is_inside_git_repo || {
     echo "ERROR: not inside a Git repository"
+    exit 64 # EX_USAGE
+}
+
+is_on_main_branch || {
+    echo "ERROR: not on main branch"
     exit 64 # EX_USAGE
 }
 
