@@ -23,6 +23,18 @@ git update-local-repos
 - force-deletes a local branch if it has been merged into the current branch
 - checks actual diff between branches, not just the commit history
 
+## [Exclude Files](git-exclude.sh)
+
+- excludes files from git tracking locally
+- does not change the `.gitignore` file
+
+### Example
+
+```shell
+# do not  commit log files to the repository
+git exclude '*.log'
+```
+
 ## [Rebase Remote Main Branch](git-rebase-remote-main.sh)
 
 - use before pushing a branch to remote
