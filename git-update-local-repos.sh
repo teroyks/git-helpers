@@ -5,6 +5,10 @@
 
 # define helpers
 
+EM='\033[0;32m' # Emphasis - green
+EO='\033[0;33m' # Emphasis/orange
+NC='\033[0m'    # No Color
+
 is_inside_git_repo() {
     git rev-parse --is-inside-work-tree >/dev/null 2>&1
 }
@@ -20,7 +24,7 @@ local_repo_exists() {
 
 print_separator() {
     echo
-    echo "* * *"
+    echo -e "${EO}* * *${NC}"
     echo
 }
 
@@ -84,9 +88,6 @@ done
 # delete local repo update cache file
 
 rm "$REPO_STATUS_FILE" || echo "WARNING: Could not remove cache file $REPO_STATUS_FILE" >&2
-
-EM='\033[0;32m' # Emphasis - green
-NC='\033[0m'    # No Color
 
 echo
 echo -e "${EM}* * * Current Status * * *${NC}"
