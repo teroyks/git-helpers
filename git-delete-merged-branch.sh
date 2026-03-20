@@ -6,7 +6,7 @@
 #       and only use this script if that fails.
 # git branch -d <branch_name> || git delete-merged-branch.sh <branch_name>
 
-set -euo pipefail
+set -uo pipefail
 IFS=$'\n\t'
 
 GREEN='\033[0;32m'
@@ -53,10 +53,12 @@ if git merge --no-commit --no-ff "$branch_name"; then
     else
         echo -e "🚫 ${RED}The branch contains code changes -- not deleted${NC}"
     fi
-    # aborting merge (skip if there was nothing to merge)
-    if [[ -e ".git/MERGE_HEAD" ]]; then
-        git merge --abort
-    fi
+fi
+
+# aborting merge (skip if there was nothing to merge, recover if merge failed)
+if [[ -e ".git/MERGE_HEAD" ]]; then
+    git merge --abort
+    echo -e "🚫 ${RED}Could not finish -- merge aborted for: $branch_name${NC}"
 fi
 
 # putting everything back to normal
