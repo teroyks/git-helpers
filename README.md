@@ -20,7 +20,7 @@ git update-local-repos
 
 ## [Delete Merged Branch](git-delete-merged-branch.sh)
 
-- force-deletes a local branch if it has been merged into the current branch
+- force-deletes a local branch if its contents have been merged into the current branch
 - checks actual diff between branches, not just the commit history
 
 ## [Exclude Files](git-exclude.sh)
